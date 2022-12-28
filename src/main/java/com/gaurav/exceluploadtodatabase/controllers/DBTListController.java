@@ -2,6 +2,7 @@ package com.gaurav.exceluploadtodatabase.controllers;
 
 import com.gaurav.exceluploadtodatabase.entities.DBTList;
 import com.gaurav.exceluploadtodatabase.helper.DBTListHelper;
+import com.gaurav.exceluploadtodatabase.repository.DBTListRepo;
 import com.gaurav.exceluploadtodatabase.services.DBTListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class DBTListController {
     @Autowired
     private DBTListService dbtListService;
 
+    @Autowired
+    private DBTListRepo dbtListRepo;
+
     @PostMapping("/DBTList/upload")
     public ResponseEntity<?> upload(@RequestParam("file")MultipartFile file)    {
         if(DBTListHelper.checkExcelFormat(file))    {
@@ -32,4 +36,12 @@ public class DBTListController {
         return this.dbtListService.getAllRecords();
     }
 
+    @GetMapping("/DBTList/locationCode")
+    public List<DBTList> getDBTListByLocation(@RequestParam("locationCode") String locationCode) {
+        return dbtListRepo.findDBTListByLocationCode(locationCode);
+    }
+    @GetMapping("/DBTList/serviceNo")
+    public List<DBTList> getDBTListByServiceNo(@RequestParam("serviceNo") String serviceNo) {
+        return dbtListRepo.findDBTListByServiceNo(serviceNo);
+    }
 }
